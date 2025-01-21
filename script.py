@@ -16,6 +16,8 @@ from bs4 import BeautifulSoup
 import time
 from typing import List, Dict
 import re
+
+
 def extract_event_info(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
     
@@ -54,6 +56,8 @@ def extract_event_info(html_content):
         })
     
     return events_data
+
+
 def fetch_events_page(url: str = "https://www.jamd.ac.il/calendar-of-events-page") -> str:
     """Fetch the events page with retries."""
     headers = {
@@ -111,7 +115,7 @@ def parse_hebrew_date(date_str: str) -> datetime:
     israel_tz = pytz.timezone('Asia/Jerusalem')
     current_year = datetime.now(israel_tz).year
     
-    # First create a naive datetime
+    # Create a naive datetime
     date_string = f"{day} {month_str} {current_year} {time}"
     naive_dt = datetime.strptime(date_string, "%d %B %Y %H:%M")
     
@@ -128,7 +132,6 @@ def parse_hebrew_date(date_str: str) -> datetime:
 def create_event_key(event_data: Dict) -> str:
     """Create a unique key for an event based on title, date, and location."""
     return f"{event_data['title']}_{event_data['date']}_{event_data['location']}"
-
 def is_event_in_past(event_date: datetime) -> bool:
     """Check if event has already passed."""
     israel_tz = pytz.timezone('Asia/Jerusalem')
@@ -137,18 +140,18 @@ def is_event_in_past(event_date: datetime) -> bool:
     # If event_date is naive (has no timezone), localize it
     if event_date.tzinfo is None:
         event_date = israel_tz.localize(event_date)
+    else:
+        # If it already has a timezone, convert it to Israel timezone
+        event_date = event_date.astimezone(israel_tz)
         
     return event_date < now
-
 
 def create_ical_event(event_data: Dict, event_uid: str) -> ICalEvent:
     """Create an iCalendar event from event data."""
     event = ICalEvent()
     
-    # Parse start time
+    # Parse start time - it will already be timezone-aware
     start_time = parse_hebrew_date(event_data['date'])
-    israel_tz = pytz.timezone('Asia/Jerusalem')
-    start_time = israel_tz.localize(start_time)
     
     # Set end time (default 2 hours after start)
     end_time = start_time + timedelta(hours=2)
@@ -159,7 +162,7 @@ def create_ical_event(event_data: Dict, event_uid: str) -> ICalEvent:
     event.add('location', event_data['location'])
     event.add('description', f"Event Link: https://www.jamd.ac.il{event_data['link']}")
     event.add('uid', event_uid)
-    event.add('dtstamp', datetime.now(israel_tz))
+    event.add('dtstamp', datetime.now(pytz.timezone('Asia/Jerusalem')))
     
     return event
 
@@ -175,7 +178,7 @@ def load_or_create_calendar() -> Calendar:
     cal.add('calscale', 'GREGORIAN')
     cal.add('method', 'PUBLISH')
     return cal
-
+    
 def cleanup_past_events(calendar: Calendar, tracked_events: Dict) -> tuple:
     """Remove past events from both iCalendar and tracking file."""
     events_to_remove = []
@@ -190,10 +193,6 @@ def cleanup_past_events(calendar: Calendar, tracked_events: Dict) -> tuple:
     # Check tracked events
     for event_key, event_info in tracked_events['events'].items():
         event_date = datetime.fromisoformat(event_info['date'])
-        # Ensure event_date has timezone
-        if event_date.tzinfo is None:
-            event_date = israel_tz.localize(event_date)
-            
         if is_event_in_past(event_date):
             events_to_remove.append(event_key)
             print(f"Removing past event: {event_info['title']}")
@@ -206,10 +205,6 @@ def cleanup_past_events(calendar: Calendar, tracked_events: Dict) -> tuple:
     for component in calendar.walk():
         if component.name == "VEVENT":
             event_start = component.get('dtstart').dt
-            # Ensure event_start has timezone
-            if event_start.tzinfo is None:
-                event_start = israel_tz.localize(event_start)
-                
             if not is_event_in_past(event_start):
                 new_calendar.add_component(component)
     
