@@ -108,17 +108,17 @@ def parse_hebrew_date(date_str: str) -> datetime:
     month_str = hebrew_to_english_months.get(month_str, month_str)
     
     # Get current year
-    current_year = datetime.now().year
-    
-    date_string = f"{day} {month_str} {current_year} {time}"
-    
-    # Create datetime and attach timezone
     israel_tz = pytz.timezone('Asia/Jerusalem')
+    current_year = datetime.now(israel_tz).year
+    
+    # First create a naive datetime
+    date_string = f"{day} {month_str} {current_year} {time}"
     naive_dt = datetime.strptime(date_string, "%d %B %Y %H:%M")
     
-    # If the date with current year is in the past, use next year
-    # This handles cases where we're parsing events for the next year
+    # Localize it
     localized_dt = israel_tz.localize(naive_dt)
+    
+    # If the date is in the past, try next year
     if localized_dt < datetime.now(israel_tz):
         naive_dt = datetime.strptime(f"{day} {month_str} {current_year + 1} {time}", "%d %B %Y %H:%M")
         localized_dt = israel_tz.localize(naive_dt)
