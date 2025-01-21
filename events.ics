@@ -1,0 +1,122 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//JAMD Events Calendar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+SUMMARY:ערב זמרים במחלקה למוסיקה מזרחית
+DTSTART;TZID=Asia/Jerusalem:20260113T190000
+DTEND;TZID=Asia/Jerusalem:20260113T210000
+DTSTAMP:20250121T151821Z
+UID:31b198bc-fd0e-4bef-8b1d-af4deb5d225a
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8160
+LOCATION:אולם 221\, בניין האקדמיה
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:ערב אנסמבלים של המחלקה לביצוע רב-תחו
+ מי
+DTSTART;TZID=Asia/Jerusalem:20260114T193000
+DTEND;TZID=Asia/Jerusalem:20260114T213000
+DTSTAMP:20250121T151821Z
+UID:0d5cdd68-a1ee-47af-a951-0ef3c678ee74
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8164
+LOCATION:אולם 221
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:ערב מוסיקלי במלאת 100 שנים להולדתו של 
+ המשורר יהודה עמיחי‎
+DTSTART;TZID=Asia/Jerusalem:20260115T200000
+DTEND;TZID=Asia/Jerusalem:20260115T220000
+DTSTAMP:20250121T151821Z
+UID:2ebf04d5-c095-4825-ac3b-515e38f8e4bf
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8146
+LOCATION:תיאטרון ירושלים
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:האקדמיה יוצאת לרחבי ירושלים: מופעי ה
+ מחלקה לביצוע ג'אז באקדמיה ב"נוקטורנו"
+DTSTART;TZID=Asia/Jerusalem:20260120T200000
+DTEND;TZID=Asia/Jerusalem:20260120T220000
+DTSTAMP:20250121T151821Z
+UID:0fbe5c41-2f06-4cbe-ada9-80d60edad0d8
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8157
+LOCATION:קפה נוקטורנו: בצלאל 7\, ירושלים
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:קונצרט האקדמיה למוסיקה בספרייה הלאו
+ מית - "קולות שמימיים ממזרח ומערב"
+DTSTART;TZID=Asia/Jerusalem:20250122T193000
+DTEND;TZID=Asia/Jerusalem:20250122T213000
+DTSTAMP:20250121T151821Z
+UID:45457fb7-84e1-4c75-b119-11dfcce0f3fa
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8159
+LOCATION:הספרייה הלאומית\, קפלן 1\, אודיטוריום
+  ע"ש דוד גפן
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:קונצרט האקדמיה למוסיקה בקונסרבטורי
+ ון באר שבע - "קולות שמימיים ממזרח ומערב"
+DTSTART;TZID=Asia/Jerusalem:20250123T183000
+DTEND;TZID=Asia/Jerusalem:20250123T203000
+DTSTAMP:20250121T151821Z
+UID:94d0c7ae-91dc-4ee6-91dd-85ad67830715
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8165
+LOCATION:קונסרבטוריון באר שבע
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות לכלי קשת לזכרו של דוד גריטס ז"ל
+ \, שלב א' - תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20250317T143000
+DTEND;TZID=Asia/Jerusalem:20250317T163000
+DTSTAMP:20250121T151821Z
+UID:30bd1e4d-0832-4545-8813-b8e4b8d78016
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8147
+LOCATION:אולם הרסיטלים
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות לכלי קשת לזכרו של דוד גריטס ז"ל
+ \, שלב ב' - תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20250324T160000
+DTEND;TZID=Asia/Jerusalem:20250324T180000
+DTSTAMP:20250121T151821Z
+UID:8de0a266-f522-45ab-a6da-f425b12b1482
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8148
+LOCATION:אולם הרסיטלים
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות לכלי נשיפה ונקישה - שלב א' תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20250326T150000
+DTEND;TZID=Asia/Jerusalem:20250326T170000
+DTSTAMP:20250121T151821Z
+UID:eeda5eab-8da8-4d87-a47c-d9773cd17baa
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8153
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות לכלי נשיפה ונקישה - שלב ב' תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20250331T170000
+DTEND;TZID=Asia/Jerusalem:20250331T190000
+DTSTAMP:20250121T151821Z
+UID:f4ae92a8-8fb6-4873-9efb-3ba050dcfe8b
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8154
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות דואו - שלב א' תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20250507T150000
+DTEND;TZID=Asia/Jerusalem:20250507T170000
+DTSTAMP:20250121T151821Z
+UID:47d274f0-954b-4459-9a00-1572693ef603
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8149
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות דואו - שלב ב' תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20250508T180000
+DTEND;TZID=Asia/Jerusalem:20250508T200000
+DTSTAMP:20250121T151821Z
+UID:a90a4f19-274d-4b77-a235-e8bdc4c97910
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8150
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+END:VCALENDAR
