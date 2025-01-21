@@ -106,8 +106,24 @@ def parse_hebrew_date(date_str: str) -> datetime:
     day, month_str = date_str.split(' ', 1)
     month_str, time = month_str.replace(',', '').rsplit(' ', 1)
     month_str = hebrew_to_english_months.get(month_str, month_str)
-    date_string = f"{day} {month_str} 2025 {time}"
-    return datetime.strptime(date_string, "%d %B %Y %H:%M")
+    
+    # Get current year
+    current_year = datetime.now().year
+    
+    date_string = f"{day} {month_str} {current_year} {time}"
+    
+    # Create datetime and attach timezone
+    israel_tz = pytz.timezone('Asia/Jerusalem')
+    naive_dt = datetime.strptime(date_string, "%d %B %Y %H:%M")
+    
+    # If the date with current year is in the past, use next year
+    # This handles cases where we're parsing events for the next year
+    localized_dt = israel_tz.localize(naive_dt)
+    if localized_dt < datetime.now(israel_tz):
+        naive_dt = datetime.strptime(f"{day} {month_str} {current_year + 1} {time}", "%d %B %Y %H:%M")
+        localized_dt = israel_tz.localize(naive_dt)
+    
+    return localized_dt
 
 def create_event_key(event_data: Dict) -> str:
     """Create a unique key for an event based on title, date, and location."""
@@ -117,7 +133,13 @@ def is_event_in_past(event_date: datetime) -> bool:
     """Check if event has already passed."""
     israel_tz = pytz.timezone('Asia/Jerusalem')
     now = datetime.now(israel_tz)
+    
+    # If event_date is naive (has no timezone), localize it
+    if event_date.tzinfo is None:
+        event_date = israel_tz.localize(event_date)
+        
     return event_date < now
+
 
 def create_ical_event(event_data: Dict, event_uid: str) -> ICalEvent:
     """Create an iCalendar event from event data."""
@@ -167,7 +189,11 @@ def cleanup_past_events(calendar: Calendar, tracked_events: Dict) -> tuple:
     
     # Check tracked events
     for event_key, event_info in tracked_events['events'].items():
-        event_date = israel_tz.localize(datetime.fromisoformat(event_info['date']))
+        event_date = datetime.fromisoformat(event_info['date'])
+        # Ensure event_date has timezone
+        if event_date.tzinfo is None:
+            event_date = israel_tz.localize(event_date)
+            
         if is_event_in_past(event_date):
             events_to_remove.append(event_key)
             print(f"Removing past event: {event_info['title']}")
@@ -180,10 +206,15 @@ def cleanup_past_events(calendar: Calendar, tracked_events: Dict) -> tuple:
     for component in calendar.walk():
         if component.name == "VEVENT":
             event_start = component.get('dtstart').dt
+            # Ensure event_start has timezone
+            if event_start.tzinfo is None:
+                event_start = israel_tz.localize(event_start)
+                
             if not is_event_in_past(event_start):
                 new_calendar.add_component(component)
     
     return new_calendar, tracked_events
+
 
 def update_calendar_with_events(events_data: List[Dict]) -> None:
     """Updates iCalendar with new events and tracks them in JSON."""
