@@ -15,7 +15,45 @@ import requests
 from bs4 import BeautifulSoup
 import time
 from typing import List, Dict
-
+import re
+def extract_event_info(html_content):
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
+    # Find all matching div elements
+    events = soup.find_all('div', class_=['col', 'col-xs-12', 'col-lg-12'])
+    
+    events_data = []
+    for event in events:
+        # Extract title and link
+        title_div = event.find('div', class_='views-field-title')
+        if title_div:
+            title_link = title_div.find('a')
+            if title_link:
+                title = title_link.text
+                link = title_link.get('href')
+            else:
+                title = title_div.text.strip()
+                link = None
+        else:
+            title = None
+            link = None
+            
+        # Extract date
+        date_div = event.find('div', class_='views-field-field-event-date')
+        date = date_div.find('span', class_='date-display-single').text.strip() if date_div else None
+        
+        # Extract location
+        location_div = event.find('div', class_='views-field-field-event-location')
+        location = location_div.find('div', class_='field-content').text.strip() if location_div else None
+        
+        events_data.append({
+            'title': title,
+            'date': date,
+            'location': location,
+            'link': link
+        })
+    
+    return events_data
 def fetch_events_page(url: str = "https://www.jamd.ac.il/calendar-of-events-page") -> str:
     """Fetch the events page with retries."""
     headers = {
