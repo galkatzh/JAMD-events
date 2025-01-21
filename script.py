@@ -90,44 +90,6 @@ def save_tracked_events(events_dict: Dict) -> None:
     with open(EVENTS_FILE, 'w', encoding='utf-8') as f:
         json.dump(events_dict, f, ensure_ascii=False, indent=2)
 
-def parse_hebrew_date(date_str: str) -> datetime:
-    """Convert Hebrew date string to datetime object."""
-    hebrew_to_english_months = {
-        'ינואר': 'January',
-        'פברואר': 'February',
-        'מרץ': 'March',
-        'אפריל': 'April',
-        'מאי': 'May',
-        'יוני': 'June',
-        'יולי': 'July',
-        'אוגוסט': 'August',
-        'ספטמבר': 'September',
-        'אוקטובר': 'October',
-        'נובמבר': 'November',
-        'דצמבר': 'December'
-    }
-    
-    day, month_str = date_str.split(' ', 1)
-    month_str, time = month_str.replace(',', '').rsplit(' ', 1)
-    month_str = hebrew_to_english_months.get(month_str, month_str)
-    
-    # Get current year
-    israel_tz = pytz.timezone('Asia/Jerusalem')
-    current_year = datetime.now(israel_tz).year
-    
-    # Create a naive datetime
-    date_string = f"{day} {month_str} {current_year} {time}"
-    naive_dt = datetime.strptime(date_string, "%d %B %Y %H:%M")
-    
-    # Localize it
-    localized_dt = israel_tz.localize(naive_dt)
-    
-    # If the date is in the past, try next year
-    if localized_dt < datetime.now(israel_tz):
-        naive_dt = datetime.strptime(f"{day} {month_str} {current_year + 1} {time}", "%d %B %Y %H:%M")
-        localized_dt = israel_tz.localize(naive_dt)
-    
-    return localized_dt
 
 def create_event_key(event_data: Dict) -> str:
     """Create a unique key for an event based on title, date, and location."""
@@ -146,25 +108,6 @@ def is_event_in_past(event_date: datetime) -> bool:
         
     return event_date < now
 
-def create_ical_event(event_data: Dict, event_uid: str) -> ICalEvent:
-    """Create an iCalendar event from event data."""
-    event = ICalEvent()
-    
-    # Parse start time - it will already be timezone-aware
-    start_time = parse_hebrew_date(event_data['date'])
-    
-    # Set end time (default 2 hours after start)
-    end_time = start_time + timedelta(hours=2)
-    
-    event.add('summary', event_data['title'])
-    event.add('dtstart', start_time)
-    event.add('dtend', end_time)
-    event.add('location', event_data['location'])
-    event.add('description', f"Event Link: https://www.jamd.ac.il{event_data['link']}")
-    event.add('uid', event_uid)
-    event.add('dtstamp', datetime.now(pytz.timezone('Asia/Jerusalem')))
-    
-    return event
 
 def load_or_create_calendar() -> Calendar:
     """Load existing calendar or create new one."""
@@ -178,7 +121,136 @@ def load_or_create_calendar() -> Calendar:
     cal.add('calscale', 'GREGORIAN')
     cal.add('method', 'PUBLISH')
     return cal
+def parse_hebrew_date(date_str: str) -> datetime | None:
+    """
+    Convert Hebrew date string to datetime object.
+    Returns None if the date string is invalid.
+    """
+    if not date_str:
+        return None
+        
+    try:
+        hebrew_to_english_months = {
+            'ינואר': 'January',
+            'פברואר': 'February',
+            'מרץ': 'March',
+            'אפריל': 'April',
+            'מאי': 'May',
+            'יוני': 'June',
+            'יולי': 'July',
+            'אוגוסט': 'August',
+            'ספטמבר': 'September',
+            'אוקטובר': 'October',
+            'נובמבר': 'November',
+            'דצמבר': 'December'
+        }
+        
+        day, month_str = date_str.split(' ', 1)
+        month_str, time = month_str.replace(',', '').rsplit(' ', 1)
+        month_str = hebrew_to_english_months.get(month_str, month_str)
+        
+        israel_tz = pytz.timezone('Asia/Jerusalem')
+        current_year = datetime.now(israel_tz).year
+        
+        date_string = f"{day} {month_str} {current_year} {time}"
+        naive_dt = datetime.strptime(date_string, "%d %B %Y %H:%M")
+        localized_dt = israel_tz.localize(naive_dt)
+        
+        if localized_dt < datetime.now(israel_tz):
+            naive_dt = datetime.strptime(f"{day} {month_str} {current_year + 1} {time}", "%d %B %Y %H:%M")
+            localized_dt = israel_tz.localize(naive_dt)
+        
+        return localized_dt
+    except (ValueError, AttributeError, IndexError) as e:
+        print(f"Error parsing date '{date_str}': {str(e)}")
+        return None
+
+def update_calendar_with_events(events_data: List[Dict]) -> None:
+    """Updates iCalendar with new events and tracks them in JSON."""
+    tracked_events = load_tracked_events()
+    calendar = load_or_create_calendar()
     
+    # Cleanup past events
+    calendar, tracked_events = cleanup_past_events(calendar, tracked_events)
+    
+    # Process new events
+    for event_data in events_data:
+        try:
+            # Skip events with missing required data
+            if not all(key in event_data and event_data[key] for key in ['title', 'date', 'location']):
+                print(f"Skipping event due to missing data: {event_data}")
+                continue
+                
+            event_key = create_event_key(event_data)
+            
+            # Skip if event already tracked
+            if event_key in tracked_events['events']:
+                print(f"Event already exists: {event_data['title']}")
+                continue
+            
+            # Parse date and skip if parsing fails
+            event_date = parse_hebrew_date(event_data['date'])
+            if not event_date:
+                print(f"Skipping event due to invalid date: {event_data['title']}")
+                continue
+                
+            if is_event_in_past(event_date):
+                print(f"Skipping past event: {event_data['title']}")
+                continue
+            
+            # Create unique ID for event
+            event_uid = str(uuid.uuid4())
+            
+            # Create and add calendar event
+            ical_event = create_ical_event(event_data, event_uid)
+            if ical_event:  # Only add if event creation was successful
+                calendar.add_component(ical_event)
+                
+                # Track the event
+                tracked_events['events'][event_key] = {
+                    'title': event_data['title'],
+                    'date': event_date.isoformat(),
+                    'location': event_data['location'],
+                    'link': event_data['link'],
+                    'uid': event_uid
+                }
+                print(f"Added new event: {event_data['title']}")
+            
+        except Exception as e:
+            print(f"Error processing event {event_data.get('title', 'Unknown')}: {str(e)}")
+            continue
+    
+    # Save updated calendar and tracking data
+    with open(CALENDAR_FILE, 'wb') as f:
+        f.write(calendar.to_ical())
+    save_tracked_events(tracked_events)
+
+def create_ical_event(event_data: Dict, event_uid: str) -> ICalEvent | None:
+    """Create an iCalendar event from event data."""
+    try:
+        event = ICalEvent()
+        
+        # Parse start time
+        start_time = parse_hebrew_date(event_data['date'])
+        if not start_time:
+            return None
+            
+        # Set end time (default 2 hours after start)
+        end_time = start_time + timedelta(hours=2)
+        
+        event.add('summary', event_data['title'])
+        event.add('dtstart', start_time)
+        event.add('dtend', end_time)
+        event.add('location', event_data['location'])
+        event.add('description', f"Event Link: https://www.jamd.ac.il{event_data['link']}" if event_data.get('link') else "No link available")
+        event.add('uid', event_uid)
+        event.add('dtstamp', datetime.now(pytz.timezone('Asia/Jerusalem')))
+        
+        return event
+    except Exception as e:
+        print(f"Error creating calendar event for {event_data.get('title', 'Unknown')}: {str(e)}")
+        return None
+        
 def cleanup_past_events(calendar: Calendar, tracked_events: Dict) -> tuple:
     """Remove past events from both iCalendar and tracking file."""
     events_to_remove = []
@@ -211,50 +283,7 @@ def cleanup_past_events(calendar: Calendar, tracked_events: Dict) -> tuple:
     return new_calendar, tracked_events
 
 
-def update_calendar_with_events(events_data: List[Dict]) -> None:
-    """Updates iCalendar with new events and tracks them in JSON."""
-    tracked_events = load_tracked_events()
-    calendar = load_or_create_calendar()
-    
-    # Cleanup past events
-    calendar, tracked_events = cleanup_past_events(calendar, tracked_events)
-    
-    # Process new events
-    for event_data in events_data:
-        event_key = create_event_key(event_data)
-        
-        # Skip if event already tracked
-        if event_key in tracked_events['events']:
-            print(f"Event already exists: {event_data['title']}")
-            continue
-        
-        # Parse date for checking if event is in past
-        event_date = parse_hebrew_date(event_data['date'])
-        if is_event_in_past(event_date):
-            print(f"Skipping past event: {event_data['title']}")
-            continue
-        
-        # Create unique ID for event
-        event_uid = str(uuid.uuid4())
-        
-        # Create and add calendar event
-        ical_event = create_ical_event(event_data, event_uid)
-        calendar.add_component(ical_event)
-        
-        # Track the event
-        tracked_events['events'][event_key] = {
-            'title': event_data['title'],
-            'date': event_date.isoformat(),
-            'location': event_data['location'],
-            'link': event_data['link'],
-            'uid': event_uid
-        }
-        print(f"Added new event: {event_data['title']}")
-    
-    # Save updated calendar and tracking data
-    with open(CALENDAR_FILE, 'wb') as f:
-        f.write(calendar.to_ical())
-    save_tracked_events(tracked_events)
+
 
 if __name__ == "__main__":
     try:
