@@ -43,27 +43,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8157
 LOCATION:קפה נוקטורנו: בצלאל 7\, ירושלים
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:קונצרט האקדמיה למוסיקה בספרייה הלאו
- מית - "קולות שמימיים ממזרח ומערב"
-DTSTART;TZID=Asia/Jerusalem:20250122T193000
-DTEND;TZID=Asia/Jerusalem:20250122T213000
-DTSTAMP:20250121T151821Z
-UID:45457fb7-84e1-4c75-b119-11dfcce0f3fa
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8159
-LOCATION:הספרייה הלאומית\, קפלן 1\, אודיטוריום
-  ע"ש דוד גפן
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:קונצרט האקדמיה למוסיקה בקונסרבטורי
- ון באר שבע - "קולות שמימיים ממזרח ומערב"
-DTSTART;TZID=Asia/Jerusalem:20250123T183000
-DTEND;TZID=Asia/Jerusalem:20250123T203000
-DTSTAMP:20250121T151821Z
-UID:94d0c7ae-91dc-4ee6-91dd-85ad67830715
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8165
-LOCATION:קונסרבטוריון באר שבע
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:תחרות לכלי קשת לזכרו של דוד גריטס ז"ל
  \, שלב א' - תשפ"ה
 DTSTART;TZID=Asia/Jerusalem:20250317T143000
@@ -118,5 +97,26 @@ DTSTAMP:20250121T151821Z
 UID:a90a4f19-274d-4b77-a235-e8bdc4c97910
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8150
 LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:קונצרט האקדמיה למוסיקה בספרייה הלאו
+ מית - "קולות שמימיים ממזרח ומערב"
+DTSTART;TZID=Asia/Jerusalem:20260122T193000
+DTEND;TZID=Asia/Jerusalem:20260122T213000
+DTSTAMP:20250127T042941Z
+UID:835d7981-e8fd-48d5-95b6-33c2370fa03d
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8159
+LOCATION:הספרייה הלאומית\, קפלן 1\, אודיטוריום
+  ע"ש דוד גפן
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:קונצרט האקדמיה למוסיקה בקונסרבטורי
+ ון באר שבע - "קולות שמימיים ממזרח ומערב"
+DTSTART;TZID=Asia/Jerusalem:20260123T183000
+DTEND;TZID=Asia/Jerusalem:20260123T203000
+DTSTAMP:20250127T042941Z
+UID:62ee9fed-edaf-4537-b85a-ec80dfd45032
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8165
+LOCATION:קונסרבטוריון באר שבע
 END:VEVENT
 END:VCALENDAR
