@@ -119,4 +119,14 @@ UID:62ee9fed-edaf-4537-b85a-ec80dfd45032
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8165
 LOCATION:קונסרבטוריון באר שבע
 END:VEVENT
+BEGIN:VEVENT
+SUMMARY:קונצרט התזמורת הסימפונית ע"ש מנדי רו
+ דן: "Mozart & Bridges of Passion"
+DTSTART;TZID=Asia/Jerusalem:20250402T190000
+DTEND;TZID=Asia/Jerusalem:20250402T210000
+DTSTAMP:20250222T042935Z
+UID:01fa9857-f587-42b0-b144-e6594974d6e2
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8175
+LOCATION:ימק"א ירושלים
+END:VEVENT
 END:VCALENDAR
