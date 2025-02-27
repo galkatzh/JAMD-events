@@ -129,4 +129,14 @@ UID:01fa9857-f587-42b0-b144-e6594974d6e2
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8175
 LOCATION:ימק"א ירושלים
 END:VEVENT
+BEGIN:VEVENT
+SUMMARY:סדרת 'אקזוטיקה ורב־תרבותיות' - אקזוט
+ יקאמרה\, ערב מוזיקה קאמרית
+DTSTART;TZID=Asia/Jerusalem:20250319T200000
+DTEND;TZID=Asia/Jerusalem:20250319T220000
+DTSTAMP:20250227T043015Z
+UID:5a7a9f31-c256-4246-a155-1c37be1f3c56
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8178
+LOCATION:תיאטרון ירושלים - אולם רבקה קראון
+END:VEVENT
 END:VCALENDAR
