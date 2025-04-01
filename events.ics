@@ -43,44 +43,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8157
 LOCATION:קפה נוקטורנו: בצלאל 7\, ירושלים
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:תחרות לכלי קשת לזכרו של דוד גריטס ז"ל
- \, שלב א' - תשפ"ה
-DTSTART;TZID=Asia/Jerusalem:20250317T143000
-DTEND;TZID=Asia/Jerusalem:20250317T163000
-DTSTAMP:20250121T151821Z
-UID:30bd1e4d-0832-4545-8813-b8e4b8d78016
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8147
-LOCATION:אולם הרסיטלים
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:תחרות לכלי קשת לזכרו של דוד גריטס ז"ל
- \, שלב ב' - תשפ"ה
-DTSTART;TZID=Asia/Jerusalem:20250324T160000
-DTEND;TZID=Asia/Jerusalem:20250324T180000
-DTSTAMP:20250121T151821Z
-UID:8de0a266-f522-45ab-a6da-f425b12b1482
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8148
-LOCATION:אולם הרסיטלים
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:תחרות לכלי נשיפה ונקישה - שלב א' תשפ"ה
-DTSTART;TZID=Asia/Jerusalem:20250326T150000
-DTEND;TZID=Asia/Jerusalem:20250326T170000
-DTSTAMP:20250121T151821Z
-UID:eeda5eab-8da8-4d87-a47c-d9773cd17baa
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8153
-LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:תחרות לכלי נשיפה ונקישה - שלב ב' תשפ"ה
-DTSTART;TZID=Asia/Jerusalem:20250331T170000
-DTEND;TZID=Asia/Jerusalem:20250331T190000
-DTSTAMP:20250121T151821Z
-UID:f4ae92a8-8fb6-4873-9efb-3ba050dcfe8b
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8154
-LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:תחרות דואו - שלב א' תשפ"ה
 DTSTART;TZID=Asia/Jerusalem:20250507T150000
 DTEND;TZID=Asia/Jerusalem:20250507T170000
@@ -128,15 +90,5 @@ DTSTAMP:20250222T042935Z
 UID:01fa9857-f587-42b0-b144-e6594974d6e2
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8175
 LOCATION:ימק"א ירושלים
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:סדרת 'אקזוטיקה ורב־תרבותיות' - אקזוט
- יקאמרה\, ערב מוזיקה קאמרית
-DTSTART;TZID=Asia/Jerusalem:20250319T200000
-DTEND;TZID=Asia/Jerusalem:20250319T220000
-DTSTAMP:20250227T043015Z
-UID:5a7a9f31-c256-4246-a155-1c37be1f3c56
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8178
-LOCATION:תיאטרון ירושלים - אולם רבקה קראון
 END:VEVENT
 END:VCALENDAR
