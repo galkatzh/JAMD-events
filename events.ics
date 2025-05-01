@@ -91,4 +91,13 @@ UID:a709b583-2fbe-4a27-9877-7463b0aa4f46
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8175
 LOCATION:ימק"א ירושלים
 END:VEVENT
+BEGIN:VEVENT
+SUMMARY:ערב הוקרה ליוסי ירושלמי‎
+DTSTART;TZID=Asia/Jerusalem:20250605T180000
+DTEND;TZID=Asia/Jerusalem:20250605T200000
+DTSTAMP:20250501T043349Z
+UID:d2a61871-2a20-4d7a-bf6d-377b96717295
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8198
+LOCATION:אולם הרסיטלים
+END:VEVENT
 END:VCALENDAR
