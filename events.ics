@@ -43,15 +43,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8157
 LOCATION:קפה נוקטורנו: בצלאל 7\, ירושלים
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:תחרות דואו - שלב א' תשפ"ה
-DTSTART;TZID=Asia/Jerusalem:20250507T150000
-DTEND;TZID=Asia/Jerusalem:20250507T170000
-DTSTAMP:20250121T151821Z
-UID:47d274f0-954b-4459-9a00-1572693ef603
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8149
-LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:תחרות דואו - שלב ב' תשפ"ה
 DTSTART;TZID=Asia/Jerusalem:20250508T180000
 DTEND;TZID=Asia/Jerusalem:20250508T200000
@@ -99,5 +90,53 @@ DTSTAMP:20250501T043349Z
 UID:d2a61871-2a20-4d7a-bf6d-377b96717295
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8198
 LOCATION:אולם הרסיטלים
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:גמר תחרות נגן ג'אז תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20260505T183000
+DTEND;TZID=Asia/Jerusalem:20260505T203000
+DTSTAMP:20250508T043335Z
+UID:8f7f84c1-d27f-48fd-9664-be3a7e4c277c
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8199
+LOCATION:אולם הג'אז ע"ש משפחת שפירא
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות דואו - שלב א' תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20260507T150000
+DTEND;TZID=Asia/Jerusalem:20260507T170000
+DTSTAMP:20250508T043335Z
+UID:ad189877-10e4-4797-8b77-1cc71688e2e6
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8149
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:גמר תחרות לקומפוזיציה ע"ש פרופ' חיים 
+ אלכסנדר - שלב א'
+DTSTART;TZID=Asia/Jerusalem:20250512T160000
+DTEND;TZID=Asia/Jerusalem:20250512T180000
+DTSTAMP:20250508T043335Z
+UID:8a453559-f3c1-4052-afaf-bb00d4f6e178
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8200
+LOCATION:אולם 221
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:המחלקה לביצוע רב-תחומי - גמר תחרות אי
+ נטרפרטציה
+DTSTART;TZID=Asia/Jerusalem:20250514T200000
+DTEND;TZID=Asia/Jerusalem:20250514T220000
+DTSTAMP:20250508T043335Z
+UID:9b92f217-235b-4b1d-8083-83bd13d0abe3
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8201
+LOCATION:אולם 221
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות ההרכבים של המחלקה למוסיקה מזר
+ חית
+DTSTART;TZID=Asia/Jerusalem:20250526T190000
+DTEND;TZID=Asia/Jerusalem:20250526T210000
+DTSTAMP:20250508T043335Z
+UID:05aaa3fa-0af8-4089-bf5b-4c76d012c670
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8202
+LOCATION:אולם 221\, בניין האקדמיה
 END:VEVENT
 END:VCALENDAR
