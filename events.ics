@@ -43,15 +43,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8157
 LOCATION:קפה נוקטורנו: בצלאל 7\, ירושלים
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:תחרות דואו - שלב ב' תשפ"ה
-DTSTART;TZID=Asia/Jerusalem:20250508T180000
-DTEND;TZID=Asia/Jerusalem:20250508T200000
-DTSTAMP:20250121T151821Z
-UID:a90a4f19-274d-4b77-a235-e8bdc4c97910
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8150
-LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:קונצרט האקדמיה למוסיקה בספרייה הלאו
  מית - "קולות שמימיים ממזרח ומערב"
 DTSTART;TZID=Asia/Jerusalem:20260122T193000
@@ -110,26 +101,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8149
 LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:גמר תחרות לקומפוזיציה ע"ש פרופ' חיים 
- אלכסנדר - שלב א'
-DTSTART;TZID=Asia/Jerusalem:20250512T160000
-DTEND;TZID=Asia/Jerusalem:20250512T180000
-DTSTAMP:20250508T043335Z
-UID:8a453559-f3c1-4052-afaf-bb00d4f6e178
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8200
-LOCATION:אולם 221
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:המחלקה לביצוע רב-תחומי - גמר תחרות אי
- נטרפרטציה
-DTSTART;TZID=Asia/Jerusalem:20250514T200000
-DTEND;TZID=Asia/Jerusalem:20250514T220000
-DTSTAMP:20250508T043335Z
-UID:9b92f217-235b-4b1d-8083-83bd13d0abe3
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8201
-LOCATION:אולם 221
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:תחרות ההרכבים של המחלקה למוסיקה מזר
  חית
 DTSTART;TZID=Asia/Jerusalem:20250526T190000
@@ -138,5 +109,53 @@ DTSTAMP:20250508T043335Z
 UID:05aaa3fa-0af8-4089-bf5b-4c76d012c670
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8202
 LOCATION:אולם 221\, בניין האקדמיה
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות דואו - שלב ב' תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20260508T180000
+DTEND;TZID=Asia/Jerusalem:20260508T200000
+DTSTAMP:20250515T043305Z
+UID:4faba0b9-991b-467f-8212-079522b6da66
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8150
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות לקומפוזיציה ע"ש פרופ' חיים אלכ
+ סנדר - שלב א'
+DTSTART;TZID=Asia/Jerusalem:20260512T160000
+DTEND;TZID=Asia/Jerusalem:20260512T180000
+DTSTAMP:20250515T043305Z
+UID:36e405e2-ec03-43e6-a3a4-71ae8d2c8016
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8200
+LOCATION:אולם 221
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:המחלקה לביצוע רב-תחומי - גמר תחרות אי
+ נטרפרטציה
+DTSTART;TZID=Asia/Jerusalem:20260514T200000
+DTEND;TZID=Asia/Jerusalem:20260514T220000
+DTSTAMP:20250515T043305Z
+UID:0e545268-4216-4cee-8699-713b3ceaea3c
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8201
+LOCATION:אולם 221
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:PARTICIPATION - כנס הפקולטה למחול 2025
+DTSTART;TZID=Asia/Jerusalem:20250515T090000
+DTEND;TZID=Asia/Jerusalem:20250515T110000
+DTSTAMP:20250515T043305Z
+UID:b7e64a02-7638-43e9-96fb-e98424a24714
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8205
+LOCATION:בניין האקדמיה
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:גמר תחרות לקומפוזיציה ע"ש פרופ' חיים 
+ אלכסנדר
+DTSTART;TZID=Asia/Jerusalem:20250520T190000
+DTEND;TZID=Asia/Jerusalem:20250520T210000
+DTSTAMP:20250515T043305Z
+UID:e16524ab-eb8e-4f67-be29-8368ff706c14
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8208
+LOCATION:יפורסם
 END:VEVENT
 END:VCALENDAR
