@@ -101,16 +101,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8149
 LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:תחרות ההרכבים של המחלקה למוסיקה מזר
- חית
-DTSTART;TZID=Asia/Jerusalem:20250526T190000
-DTEND;TZID=Asia/Jerusalem:20250526T210000
-DTSTAMP:20250508T043335Z
-UID:05aaa3fa-0af8-4089-bf5b-4c76d012c670
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8202
-LOCATION:אולם 221\, בניין האקדמיה
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:תחרות דואו - שלב ב' תשפ"ה
 DTSTART;TZID=Asia/Jerusalem:20260508T180000
 DTEND;TZID=Asia/Jerusalem:20260508T200000
@@ -178,5 +168,55 @@ DTSTAMP:20250522T043418Z
 UID:5e11e113-770a-40fc-9dde-494ba3d5f1d6
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8214
 LOCATION:הספרייה הלאומית\, קפלן 1\, ירושלים
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות פסנתר לנגינה עם תזמורת ע"ש שרו
+ ן תבור פינץ - תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20260525T130000
+DTEND;TZID=Asia/Jerusalem:20260525T150000
+DTSTAMP:20250527T043513Z
+UID:ca4366fe-5a96-450d-9f62-1fd91d124fe7
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8220
+LOCATION:אולם ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:תחרות ההרכבים של המחלקה למוסיקה מזר
+ חית
+DTSTART;TZID=Asia/Jerusalem:20260526T190000
+DTEND;TZID=Asia/Jerusalem:20260526T210000
+DTSTAMP:20250527T043513Z
+UID:efc51ab5-0a0b-46c3-978e-4dfd0df3e082
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8202
+LOCATION:אולם 221\, בניין האקדמיה
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:התחרות למוסיקה קאמרית ע"ש דינה תורגמ
+ ן - שלב ראשון
+DTSTART;TZID=Asia/Jerusalem:20250609T160000
+DTEND;TZID=Asia/Jerusalem:20250609T180000
+DTSTAMP:20250527T043513Z
+UID:4a6e40c5-9ce3-4d38-a602-ee47e7dd0748
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/7998
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:התחרות למוסיקה קאמרית ע"ש דינה תורגמ
+ ן - שלב שני
+DTSTART;TZID=Asia/Jerusalem:20250612T160000
+DTEND;TZID=Asia/Jerusalem:20250612T180000
+DTSTAMP:20250527T043513Z
+UID:9826246f-81c4-4ef5-aa00-986dddb2cf04
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8216
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:קונצרט זוכי התחרות למוסיקה קאמרית ע"
+ ש דינה תורגמן  - תשפ"ה
+DTSTART;TZID=Asia/Jerusalem:20250627T120000
+DTEND;TZID=Asia/Jerusalem:20250627T140000
+DTSTAMP:20250527T043513Z
+UID:9d5cf7ae-a6db-49e1-8a2e-aec0f6f89d66
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8217
+LOCATION:מרכז למוסיקה עדן תמיר
 END:VEVENT
 END:VCALENDAR
