@@ -160,16 +160,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8208
 LOCATION:אולם 221
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:קונצרט בצהריים בספרייה הלאומית: מפג
- ש רביעי\, יפתח
-DTSTART;TZID=Asia/Jerusalem:20250527T140000
-DTEND;TZID=Asia/Jerusalem:20250527T160000
-DTSTAMP:20250522T043418Z
-UID:5e11e113-770a-40fc-9dde-494ba3d5f1d6
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8214
-LOCATION:הספרייה הלאומית\, קפלן 1\, ירושלים
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:תחרות פסנתר לנגינה עם תזמורת ע"ש שרו
  ן תבור פינץ - תשפ"ה
 DTSTART;TZID=Asia/Jerusalem:20260525T130000
