@@ -74,15 +74,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8175
 LOCATION:ימק"א ירושלים
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:ערב הוקרה ליוסי ירושלמי‎
-DTSTART;TZID=Asia/Jerusalem:20250605T180000
-DTEND;TZID=Asia/Jerusalem:20250605T200000
-DTSTAMP:20250501T043349Z
-UID:d2a61871-2a20-4d7a-bf6d-377b96717295
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8198
-LOCATION:אולם הרסיטלים
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:גמר תחרות נגן ג'אז תשפ"ה
 DTSTART;TZID=Asia/Jerusalem:20260505T183000
 DTEND;TZID=Asia/Jerusalem:20260505T203000
@@ -208,5 +199,24 @@ DTSTAMP:20250527T043513Z
 UID:9d5cf7ae-a6db-49e1-8a2e-aec0f6f89d66
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8217
 LOCATION:מרכז למוסיקה עדן תמיר
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:ערב הוקרה ליוסי ירושלמי‎
+DTSTART;TZID=Asia/Jerusalem:20260605T180000
+DTEND;TZID=Asia/Jerusalem:20260605T200000
+DTSTAMP:20250608T043803Z
+UID:c9abdee6-8ea7-45a0-bc0d-444010cb2113
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8198
+LOCATION:אולם הרסיטלים
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:אומינידיאס - ערב של מחול\, מוזיקה וטכ
+ נולוגיה
+DTSTART;TZID=Asia/Jerusalem:20250611T203000
+DTEND;TZID=Asia/Jerusalem:20250611T223000
+DTSTAMP:20250608T043803Z
+UID:29a5c602-59e7-4b48-9d53-c4ac195ade62
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8229
+LOCATION:אולם אפיק
 END:VEVENT
 END:VCALENDAR
