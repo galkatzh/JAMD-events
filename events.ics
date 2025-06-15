@@ -171,26 +171,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8202
 LOCATION:אולם 221\, בניין האקדמיה
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:התחרות למוסיקה קאמרית ע"ש דינה תורגמ
- ן - שלב ראשון
-DTSTART;TZID=Asia/Jerusalem:20250609T160000
-DTEND;TZID=Asia/Jerusalem:20250609T180000
-DTSTAMP:20250527T043513Z
-UID:4a6e40c5-9ce3-4d38-a602-ee47e7dd0748
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/7998
-LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:התחרות למוסיקה קאמרית ע"ש דינה תורגמ
- ן - שלב שני
-DTSTART;TZID=Asia/Jerusalem:20250612T160000
-DTEND;TZID=Asia/Jerusalem:20250612T180000
-DTSTAMP:20250527T043513Z
-UID:9826246f-81c4-4ef5-aa00-986dddb2cf04
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8216
-LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:קונצרט זוכי התחרות למוסיקה קאמרית ע"
  ש דינה תורגמן  - תשפ"ה
 DTSTART;TZID=Asia/Jerusalem:20250627T120000
@@ -210,13 +190,33 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8198
 LOCATION:אולם הרסיטלים
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:התחרות למוסיקה קאמרית ע"ש דינה תורגמ
+ ן - שלב ראשון
+DTSTART;TZID=Asia/Jerusalem:20260609T160000
+DTEND;TZID=Asia/Jerusalem:20260609T180000
+DTSTAMP:20250615T043809Z
+UID:a9969737-2d3b-4eca-9581-cd92b245c6ff
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/7998
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:אומינידיאס - ערב של מחול\, מוזיקה וטכ
  נולוגיה
-DTSTART;TZID=Asia/Jerusalem:20250611T203000
-DTEND;TZID=Asia/Jerusalem:20250611T223000
-DTSTAMP:20250608T043803Z
-UID:29a5c602-59e7-4b48-9d53-c4ac195ade62
+DTSTART;TZID=Asia/Jerusalem:20260611T203000
+DTEND;TZID=Asia/Jerusalem:20260611T223000
+DTSTAMP:20250615T043809Z
+UID:56394441-6203-4d73-8a14-7e893615480c
 DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8229
 LOCATION:אולם אפיק
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:התחרות למוסיקה קאמרית ע"ש דינה תורגמ
+ ן - שלב שני
+DTSTART;TZID=Asia/Jerusalem:20260612T160000
+DTEND;TZID=Asia/Jerusalem:20260612T180000
+DTSTAMP:20250615T043809Z
+UID:455cdc58-caf3-49ed-86bf-e76d700584d1
+DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8216
+LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
 END:VEVENT
 END:VCALENDAR
