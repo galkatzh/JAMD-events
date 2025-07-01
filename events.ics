@@ -171,16 +171,6 @@ DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8202
 LOCATION:אולם 221\, בניין האקדמיה
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:קונצרט זוכי התחרות למוסיקה קאמרית ע"
- ש דינה תורגמן  - תשפ"ה
-DTSTART;TZID=Asia/Jerusalem:20250627T120000
-DTEND;TZID=Asia/Jerusalem:20250627T140000
-DTSTAMP:20250527T043513Z
-UID:9d5cf7ae-a6db-49e1-8a2e-aec0f6f89d66
-DESCRIPTION:Event Link: https://www.jamd.ac.il/node/8217
-LOCATION:מרכז למוסיקה עדן תמיר
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:ערב הוקרה ליוסי ירושלמי‎
 DTSTART;TZID=Asia/Jerusalem:20260605T180000
 DTEND;TZID=Asia/Jerusalem:20260605T200000
