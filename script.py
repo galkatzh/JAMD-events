@@ -203,9 +203,8 @@ def format_ics_datetime(dt_string):
     """Convert ISO datetime string to ICS format (YYYYMMDDTHHMMSS)"""
     try:
         dt = date_parser.parse(dt_string)
-        # Convert to UTC
-        if dt.tzinfo is not None:
-            dt = dt.astimezone(datetime.now().astimezone().tzinfo)
+        # Keep the original datetime, don't convert timezone
+        # ICS format uses local time at the event location
         return dt.strftime('%Y%m%dT%H%M%S')
     except:
         return None
