@@ -67,7 +67,7 @@ def fetch_month_calendar(year, month):
         print(f"Error fetching {month_str}: {e}")
         return None
 
-def extract_events_from_html(html_content):
+def extract_events_from_html(html_content, debug=False):
     """Extract event information from the HTML calendar"""
     
     events = []
@@ -75,6 +75,9 @@ def extract_events_from_html(html_content):
     
     # Find all event items
     event_divs = soup.find_all('div', class_='view-item-calendar_event')
+    
+    if debug and event_divs:
+        print(f"\nDEBUG: Found {len(event_divs)} event divs")
     
     for event_div in event_divs:
         event_data = {}
@@ -98,15 +101,27 @@ def extract_events_from_html(html_content):
                 if datetime_str:
                     try:
                         event_data['datetime'] = date_parser.parse(datetime_str).isoformat()
+                        if debug:
+                            print(f"  Method 1 success: {datetime_str} -> {event_data['datetime']}")
                     except:
                         event_data['datetime'] = datetime_str
+                elif debug:
+                    print(f"  Method 1: No content attribute found")
+            elif debug:
+                print(f"  Method 1: No date-display-single span found")
+        elif debug:
+            print(f"  Method 1: No views-field-field-event-date-1 div found")
         
         # Method 2: If no datetime found, try to get it from parent td's data-date attribute
         if 'datetime' not in event_data:
+            if debug:
+                print(f"  Trying Method 2 (fallback)...")
             # Find the parent <td> element which has data-date
             parent_td = event_div.find_parent('td')
             if parent_td and parent_td.get('data-date'):
                 date_str = parent_td.get('data-date')
+                if debug:
+                    print(f"    Found data-date: {date_str}")
                 # Try to find time from the date_display text
                 time_str = None
                 if 'date_display' in event_data:
@@ -115,17 +130,29 @@ def extract_events_from_html(html_content):
                     time_match = re.search(r'(\d{1,2}:\d{2})', event_data['date_display'])
                     if time_match:
                         time_str = time_match.group(1)
+                        if debug:
+                            print(f"    Extracted time from display: {time_str}")
+                    elif debug:
+                        print(f"    No time pattern found in: {event_data['date_display']}")
+                elif debug:
+                    print(f"    No date_display available")
                 
                 # Combine date and time
                 if time_str:
                     datetime_str = f"{date_str}T{time_str}:00+02:00"
                 else:
                     datetime_str = f"{date_str}T00:00:00+02:00"
+                    if debug:
+                        print(f"    Using default time 00:00")
                 
                 try:
                     event_data['datetime'] = date_parser.parse(datetime_str).isoformat()
+                    if debug:
+                        print(f"  Method 2 success: {datetime_str} -> {event_data['datetime']}")
                 except:
                     event_data['datetime'] = datetime_str
+            elif debug:
+                print(f"    No parent td with data-date found")
         
         # Extract location
         location_field = event_div.find('div', class_='views-field-field-event-location')
@@ -139,7 +166,7 @@ def extract_events_from_html(html_content):
     
     return events
 
-def scrape_calendar(start_year, start_month, end_year, end_month):
+def scrape_calendar(start_year, start_month, end_year, end_month, debug=False):
     """Scrape calendar events across multiple months"""
     
     all_events = []
@@ -156,7 +183,7 @@ def scrape_calendar(start_year, start_month, end_year, end_month):
             for command in json_response:
                 if command.get('command') == 'insert':
                     html_data = command.get('data', '')
-                    events = extract_events_from_html(html_data)
+                    events = extract_events_from_html(html_data, debug=debug)
                     all_events.extend(events)
                     print(f"  Found {len(events)} events")
         
@@ -307,11 +334,15 @@ if __name__ == '__main__':
     
     print(f"Scraping calendar from {today.strftime('%Y-%m')} to {end_date.strftime('%Y-%m')}")
     
+    # Enable debug mode to see what's being extracted
+    DEBUG = True
+    
     events = scrape_calendar(
         start_year=today.year, 
         start_month=today.month,
         end_year=end_date.year,
-        end_month=end_date.month
+        end_month=end_date.month,
+        debug=DEBUG
     )
     
     print(f"\nTotal events found: {len(events)}")
@@ -326,5 +357,6 @@ if __name__ == '__main__':
     for event in events[:3]:
         print(f"\n- {event.get('title')}")
         print(f"  Date: {event.get('date_display')}")
+        print(f"  Datetime: {event.get('datetime')}")
         print(f"  Location: {event.get('location')}")
         print(f"  URL: {event.get('url')}")
