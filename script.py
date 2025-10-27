@@ -82,6 +82,15 @@ def extract_events_from_html(html_content, debug=False):
     for event_div in event_divs:
         event_data = {}
         
+        if debug:
+            print(f"\n--- Event HTML Structure ---")
+            # Print the div classes to understand structure
+            all_divs = event_div.find_all('div', recursive=False)
+            for div in all_divs:
+                classes = div.get('class', [])
+                print(f"  Found div with classes: {' '.join(classes)}")
+            print(f"----------------------------\n")
+        
         # Extract title
         title_link = event_div.find('div', class_='views-field-title')
         if title_link:
@@ -116,43 +125,67 @@ def extract_events_from_html(html_content, debug=False):
         if 'datetime' not in event_data:
             if debug:
                 print(f"  Trying Method 2 (fallback)...")
-            # Find the parent <td> element which has data-date
-            parent_td = event_div.find_parent('td')
-            if parent_td and parent_td.get('data-date'):
-                date_str = parent_td.get('data-date')
-                if debug:
-                    print(f"    Found data-date: {date_str}")
-                # Try to find time from the date_display text
-                time_str = None
-                if 'date_display' in event_data:
-                    # Look for time pattern like "18:00"
-                    import re
-                    time_match = re.search(r'(\d{1,2}:\d{2})', event_data['date_display'])
-                    if time_match:
-                        time_str = time_match.group(1)
+            
+            # First, try to find date_display if we don't have it yet
+            if 'date_display' not in event_data:
+                # Look for alternative date field structures
+                # Try views-field-field-event-date (without the -1)
+                alt_date_field = event_div.find('div', class_='views-field-field-event-date')
+                if alt_date_field:
+                    date_span = alt_date_field.find('span', class_='date-display-single')
+                    if date_span:
+                        event_data['date_display'] = date_span.get_text(strip=True)
                         if debug:
-                            print(f"    Extracted time from display: {time_str}")
+                            print(f"    Found date_display in alt field: {event_data['date_display']}")
+                        # Also try to get datetime from content attribute here
+                        datetime_str = date_span.get('content', '')
+                        if datetime_str:
+                            try:
+                                event_data['datetime'] = date_parser.parse(datetime_str).isoformat()
+                                if debug:
+                                    print(f"    Got datetime from alt field content: {event_data['datetime']}")
+                            except:
+                                pass
+            
+            # Only continue with data-date fallback if we still don't have datetime
+            if 'datetime' not in event_data:
+                # Find the parent <td> element which has data-date
+                parent_td = event_div.find_parent('td')
+                if parent_td and parent_td.get('data-date'):
+                    date_str = parent_td.get('data-date')
+                    if debug:
+                        print(f"    Found data-date: {date_str}")
+                    # Try to find time from the date_display text
+                    time_str = None
+                    if 'date_display' in event_data:
+                        # Look for time pattern like "18:00"
+                        import re
+                        time_match = re.search(r'(\d{1,2}:\d{2})', event_data['date_display'])
+                        if time_match:
+                            time_str = time_match.group(1)
+                            if debug:
+                                print(f"    Extracted time from display: {time_str}")
+                        elif debug:
+                            print(f"    No time pattern found in: {event_data['date_display']}")
                     elif debug:
-                        print(f"    No time pattern found in: {event_data['date_display']}")
+                        print(f"    No date_display available")
+                    
+                    # Combine date and time
+                    if time_str:
+                        datetime_str = f"{date_str}T{time_str}:00+02:00"
+                    else:
+                        datetime_str = f"{date_str}T00:00:00+02:00"
+                        if debug:
+                            print(f"    Using default time 00:00")
+                    
+                    try:
+                        event_data['datetime'] = date_parser.parse(datetime_str).isoformat()
+                        if debug:
+                            print(f"  Method 2 success: {datetime_str} -> {event_data['datetime']}")
+                    except:
+                        event_data['datetime'] = datetime_str
                 elif debug:
-                    print(f"    No date_display available")
-                
-                # Combine date and time
-                if time_str:
-                    datetime_str = f"{date_str}T{time_str}:00+02:00"
-                else:
-                    datetime_str = f"{date_str}T00:00:00+02:00"
-                    if debug:
-                        print(f"    Using default time 00:00")
-                
-                try:
-                    event_data['datetime'] = date_parser.parse(datetime_str).isoformat()
-                    if debug:
-                        print(f"  Method 2 success: {datetime_str} -> {event_data['datetime']}")
-                except:
-                    event_data['datetime'] = datetime_str
-            elif debug:
-                print(f"    No parent td with data-date found")
+                    print(f"    No parent td with data-date found")
         
         # Extract location
         location_field = event_div.find('div', class_='views-field-field-event-location')
