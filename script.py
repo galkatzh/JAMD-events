@@ -1,299 +1,283 @@
-#update
-from datetime import datetime, timedelta
-import pytz
-from icalendar import Calendar, Event as ICalEvent
-from bs4 import BeautifulSoup
-import json
-import os
-from typing import Dict, List
-import uuid
-
-EVENTS_FILE = 'tracked_events.json'
-CALENDAR_FILE = 'events.ics'
-
+#!/usr/bin/env python3
+"""
+Scrape calendar events from jamd.ac.il calendar AJAX endpoint
+"""
 
 import requests
+import json
 from bs4 import BeautifulSoup
-import time
-from typing import List, Dict
+from datetime import datetime, timedelta
+from dateutil import parser as date_parser
+import csv
 import re
 
-
-def extract_event_info(html_content):
-    soup = BeautifulSoup(html_content, 'html.parser')
+def fetch_month_calendar(year, month):
+    """Fetch calendar data for a specific month"""
     
-    # Find all matching div elements
-    events = soup.find_all('div', class_=['col', 'col-xs-12', 'col-lg-12'])
+    url = "https://www.jamd.ac.il/calendar-of-events-page"
     
-    events_data = []
-    for event in events:
-        # Extract title and link
-        title_div = event.find('div', class_='views-field-title')
-        if title_div:
-            title_link = title_div.find('a')
-            if title_link:
-                title = title_link.text
-                link = title_link.get('href')
-            else:
-                title = title_div.text.strip()
-                link = None
-        else:
-            title = None
-            link = None
-            
-        # Extract date
-        date_div = event.find('div', class_='views-field-field-event-date')
-        date = date_div.find('span', class_='date-display-single').text.strip() if date_div else None
-        
-        # Extract location
-        location_div = event.find('div', class_='views-field-field-event-location')
-        location = location_div.find('div', class_='field-content').text.strip() if location_div else None
-        
-        events_data.append({
-            'title': title,
-            'date': date,
-            'location': location,
-            'link': link
-        })
+    # Format month as YYYY-MM
+    month_str = f"{year}-{month:02d}"
     
-    return events_data
-
-
-def fetch_events_page(url: str = "https://www.jamd.ac.il/calendar-of-events-page") -> str:
-    """Fetch the events page with retries."""
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    params = {
+        'page': '0',
+        'view_name': 'calendar_event',
+        'view_display_id': 'block_calendar_secondary',
+        'view_args': month_str,
+        'view_path': 'node/8289',
+        'view_base_path': 'calendar-node-field-event-date/month',
+        'view_dom_id': '43a9961c501d60faa3159e34295a5dcb',
+        'pager_element': '0',
+        'mini': month_str,
     }
     
-    max_retries = 3
-    retry_delay = 2  # seconds
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+    }
     
-    for attempt in range(max_retries):
-        try:
-            response = requests.get(url, headers=headers, timeout=10)
-            response.raise_for_status()  # Raise an exception for bad status codes
-            return response.text
-        except requests.RequestException as e:
-            if attempt == max_retries - 1:  # Last attempt
-                raise Exception(f"Failed to fetch events page after {max_retries} attempts: {e}")
-            print(f"Attempt {attempt + 1} failed, retrying in {retry_delay} seconds...")
-            time.sleep(retry_delay)
-
-def load_tracked_events() -> Dict:
-    """Load previously tracked events from JSON file."""
-    if os.path.exists(EVENTS_FILE):
-        with open(EVENTS_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    return {"events": {}}
-
-def save_tracked_events(events_dict: Dict) -> None:
-    """Save tracked events to JSON file."""
-    with open(EVENTS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(events_dict, f, ensure_ascii=False, indent=2)
-
-
-def create_event_key(event_data: Dict) -> str:
-    """Create a unique key for an event based on title, date, and location."""
-    return f"{event_data['title']}_{event_data['date']}_{event_data['location']}"
-def is_event_in_past(event_date: datetime) -> bool:
-    """Check if event has already passed."""
-    israel_tz = pytz.timezone('Asia/Jerusalem')
-    now = datetime.now(israel_tz)
-    
-    # If event_date is naive (has no timezone), localize it
-    if event_date.tzinfo is None:
-        event_date = israel_tz.localize(event_date)
-    else:
-        # If it already has a timezone, convert it to Israel timezone
-        event_date = event_date.astimezone(israel_tz)
-        
-    return event_date < now
-
-
-def load_or_create_calendar() -> Calendar:
-    """Load existing calendar or create new one."""
-    if os.path.exists(CALENDAR_FILE):
-        with open(CALENDAR_FILE, 'rb') as f:
-            return Calendar.from_ical(f.read())
-    
-    cal = Calendar()
-    cal.add('prodid', '-//JAMD Events Calendar//EN')
-    cal.add('version', '2.0')
-    cal.add('calscale', 'GREGORIAN')
-    cal.add('method', 'PUBLISH')
-    return cal
-def parse_hebrew_date(date_str: str) -> datetime | None:
-    """
-    Convert Hebrew date string to datetime object.
-    Returns None if the date string is invalid.
-    """
-    if not date_str:
-        return None
-        
     try:
-        hebrew_to_english_months = {
-            'ינואר': 'January',
-            'פברואר': 'February',
-            'מרץ': 'March',
-            'אפריל': 'April',
-            'מאי': 'May',
-            'יוני': 'June',
-            'יולי': 'July',
-            'אוגוסט': 'August',
-            'ספטמבר': 'September',
-            'אוקטובר': 'October',
-            'נובמבר': 'November',
-            'דצמבר': 'December'
-        }
-        
-        day, month_str = date_str.split(' ', 1)
-        month_str, time = month_str.replace(',', '').rsplit(' ', 1)
-        month_str = hebrew_to_english_months.get(month_str, month_str)
-        
-        israel_tz = pytz.timezone('Asia/Jerusalem')
-        current_year = datetime.now(israel_tz).year
-        
-        date_string = f"{day} {month_str} {current_year} {time}"
-        naive_dt = datetime.strptime(date_string, "%d %B %Y %H:%M")
-        localized_dt = israel_tz.localize(naive_dt)
-        
-        if localized_dt < datetime.now(israel_tz):
-            naive_dt = datetime.strptime(f"{day} {month_str} {current_year + 1} {time}", "%d %B %Y %H:%M")
-            localized_dt = israel_tz.localize(naive_dt)
-        
-        return localized_dt
-    except (ValueError, AttributeError, IndexError) as e:
-        print(f"Error parsing date '{date_str}': {str(e)}")
+        response = requests.get(url, params=params, headers=headers, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except Exception as e:
+        print(f"Error fetching {month_str}: {e}")
         return None
 
-def update_calendar_with_events(events_data: List[Dict]) -> None:
-    """Updates iCalendar with new events and tracks them in JSON."""
-    tracked_events = load_tracked_events()
-    calendar = load_or_create_calendar()
+def extract_events_from_html(html_content):
+    """Extract event information from the HTML calendar"""
     
-    # Cleanup past events
-    calendar, tracked_events = cleanup_past_events(calendar, tracked_events)
+    events = []
+    soup = BeautifulSoup(html_content, 'html.parser')
     
-    # Process new events
-    for event_data in events_data:
-        try:
-            # Skip events with missing required data
-            if not all(key in event_data and event_data[key] for key in ['title', 'date', 'location']):
-                print(f"Skipping event due to missing data: {event_data}")
-                continue
-                
-            event_key = create_event_key(event_data)
-            
-            # Skip if event already tracked
-            if event_key in tracked_events['events']:
-                print(f"Event already exists: {event_data['title']}")
-                continue
-            
-            # Parse date and skip if parsing fails
-            event_date = parse_hebrew_date(event_data['date'])
-            if not event_date:
-                print(f"Skipping event due to invalid date: {event_data['title']}")
-                continue
-                
-            if is_event_in_past(event_date):
-                print(f"Skipping past event: {event_data['title']}")
-                continue
-            
-            # Create unique ID for event
-            event_uid = str(uuid.uuid4())
-            
-            # Create and add calendar event
-            ical_event = create_ical_event(event_data, event_uid)
-            if ical_event:  # Only add if event creation was successful
-                calendar.add_component(ical_event)
-                
-                # Track the event
-                tracked_events['events'][event_key] = {
-                    'title': event_data['title'],
-                    'date': event_date.isoformat(),
-                    'location': event_data['location'],
-                    'link': event_data['link'],
-                    'uid': event_uid
-                }
-                print(f"Added new event: {event_data['title']}")
-            
-        except Exception as e:
-            print(f"Error processing event {event_data.get('title', 'Unknown')}: {str(e)}")
+    # Find all event items
+    event_divs = soup.find_all('div', class_='view-item-calendar_event')
+    
+    for event_div in event_divs:
+        event_data = {}
+        
+        # Extract title
+        title_link = event_div.find('div', class_='views-field-title')
+        if title_link:
+            link = title_link.find('a')
+            if link:
+                event_data['title'] = link.get_text(strip=True)
+                event_data['url'] = 'https://www.jamd.ac.il' + link.get('href', '')
+        
+        # Extract date/time
+        date_field = event_div.find('div', class_='views-field-field-event-date-1')
+        if date_field:
+            date_span = date_field.find('span', class_='date-display-single')
+            if date_span:
+                event_data['date_display'] = date_span.get_text(strip=True)
+                # Try to parse the datetime from the content attribute
+                datetime_str = date_span.get('content', '')
+                if datetime_str:
+                    try:
+                        event_data['datetime'] = date_parser.parse(datetime_str).isoformat()
+                    except:
+                        event_data['datetime'] = datetime_str
+        
+        # Extract location
+        location_field = event_div.find('div', class_='views-field-field-event-location')
+        if location_field:
+            location_content = location_field.find('div', class_='field-content')
+            if location_content:
+                event_data['location'] = location_content.get_text(strip=True)
+        
+        if event_data.get('title'):
+            events.append(event_data)
+    
+    return events
+
+def scrape_calendar(start_year, start_month, end_year, end_month):
+    """Scrape calendar events across multiple months"""
+    
+    all_events = []
+    current_date = datetime(start_year, start_month, 1)
+    end_date = datetime(end_year, end_month, 1)
+    
+    while current_date <= end_date:
+        print(f"Fetching {current_date.strftime('%Y-%m')}...")
+        
+        json_response = fetch_month_calendar(current_date.year, current_date.month)
+        
+        if json_response:
+            # The response is an array of commands
+            for command in json_response:
+                if command.get('command') == 'insert':
+                    html_data = command.get('data', '')
+                    events = extract_events_from_html(html_data)
+                    all_events.extend(events)
+                    print(f"  Found {len(events)} events")
+        
+        # Move to next month
+        if current_date.month == 12:
+            current_date = datetime(current_date.year + 1, 1, 1)
+        else:
+            current_date = datetime(current_date.year, current_date.month + 1, 1)
+    
+    return all_events
+
+def save_to_csv(events, filename='calendar_events.csv'):
+    """Save events to CSV file"""
+    
+    if not events:
+        print("No events to save")
+        return
+    
+    with open(filename, 'w', newline='', encoding='utf-8') as f:
+        fieldnames = ['title', 'datetime', 'date_display', 'location', 'url']
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        
+        writer.writeheader()
+        for event in events:
+            writer.writerow({
+                'title': event.get('title', ''),
+                'datetime': event.get('datetime', ''),
+                'date_display': event.get('date_display', ''),
+                'location': event.get('location', ''),
+                'url': event.get('url', '')
+            })
+    
+    print(f"\nSaved {len(events)} events to {filename}")
+
+def save_to_json(events, filename='calendar_events.json'):
+    """Save events to JSON file"""
+    
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(events, f, ensure_ascii=False, indent=2)
+    
+    print(f"Saved {len(events)} events to {filename}")
+
+def format_ics_datetime(dt_string):
+    """Convert ISO datetime string to ICS format (YYYYMMDDTHHMMSS)"""
+    try:
+        dt = date_parser.parse(dt_string)
+        # Convert to UTC
+        if dt.tzinfo is not None:
+            dt = dt.astimezone(datetime.now().astimezone().tzinfo)
+        return dt.strftime('%Y%m%dT%H%M%S')
+    except:
+        return None
+
+def sanitize_ics_text(text):
+    """Sanitize text for ICS format by escaping special characters"""
+    if not text:
+        return ''
+    # Escape special characters
+    text = text.replace('\\', '\\\\')
+    text = text.replace(',', '\\,')
+    text = text.replace(';', '\\;')
+    text = text.replace('\n', '\\n')
+    return text
+
+def save_to_ics(events, filename='calendar_events.ics'):
+    """Save events to ICS (iCalendar) file"""
+    
+    if not events:
+        print("No events to save")
+        return
+    
+    ics_lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//JAMD Calendar Scraper//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'X-WR-CALNAME:JAMD Events',
+        'X-WR-TIMEZONE:Asia/Jerusalem',
+    ]
+    
+    for idx, event in enumerate(events):
+        title = sanitize_ics_text(event.get('title', 'No Title'))
+        location = sanitize_ics_text(event.get('location', ''))
+        url = event.get('url', '')
+        
+        # Parse datetime
+        datetime_str = event.get('datetime')
+        if not datetime_str:
             continue
-    
-    # Save updated calendar and tracking data
-    with open(CALENDAR_FILE, 'wb') as f:
-        f.write(calendar.to_ical())
-    save_tracked_events(tracked_events)
-
-def create_ical_event(event_data: Dict, event_uid: str) -> ICalEvent | None:
-    """Create an iCalendar event from event data."""
-    try:
-        event = ICalEvent()
-        
-        # Parse start time
-        start_time = parse_hebrew_date(event_data['date'])
-        if not start_time:
-            return None
             
-        # Set end time (default 2 hours after start)
-        end_time = start_time + timedelta(hours=2)
+        dtstart = format_ics_datetime(datetime_str)
+        if not dtstart:
+            continue
         
-        event.add('summary', event_data['title'])
-        event.add('dtstart', start_time)
-        event.add('dtend', end_time)
-        event.add('location', event_data['location'])
-        event.add('description', f"Event Link: https://www.jamd.ac.il{event_data['link']}" if event_data.get('link') else "No link available")
-        event.add('uid', event_uid)
-        event.add('dtstamp', datetime.now(pytz.timezone('Asia/Jerusalem')))
+        # Default duration: 1 hour
+        try:
+            dt = date_parser.parse(datetime_str)
+            dt_end = dt + timedelta(hours=1)
+            dtend = format_ics_datetime(dt_end.isoformat())
+        except:
+            dtend = None
         
-        return event
-    except Exception as e:
-        print(f"Error creating calendar event for {event_data.get('title', 'Unknown')}: {str(e)}")
-        return None
+        # Generate unique ID
+        uid = f"event-{idx}-{dtstart}@jamd.ac.il"
         
-def cleanup_past_events(calendar: Calendar, tracked_events: Dict) -> tuple:
-    """Remove past events from both iCalendar and tracking file."""
-    events_to_remove = []
-    new_calendar = Calendar()
-    new_calendar.add('prodid', calendar['prodid'])
-    new_calendar.add('version', calendar['version'])
-    new_calendar.add('calscale', calendar['calscale'])
-    new_calendar.add('method', calendar['method'])
-    
-    israel_tz = pytz.timezone('Asia/Jerusalem')
-    
-    # Check tracked events
-    for event_key, event_info in tracked_events['events'].items():
-        event_date = datetime.fromisoformat(event_info['date'])
-        if is_event_in_past(event_date):
-            events_to_remove.append(event_key)
-            print(f"Removing past event: {event_info['title']}")
-    
-    # Remove from tracking dictionary
-    for event_key in events_to_remove:
-        tracked_events['events'].pop(event_key)
-    
-    # Keep only future events in calendar
-    for component in calendar.walk():
-        if component.name == "VEVENT":
-            event_start = component.get('dtstart').dt
-            if not is_event_in_past(event_start):
-                new_calendar.add_component(component)
-    
-    return new_calendar, tracked_events
-
-
-
-
-if __name__ == "__main__":
-    try:
-        # Your existing scraping code here
-        html_content = fetch_events_page()
+        # Create timestamp for DTSTAMP
+        dtstamp = datetime.now().astimezone().strftime('%Y%m%dT%H%M%SZ')
         
-        events = extract_event_info(html_content)  # Using your existing extract_event_info function
-        update_calendar_with_events(events)
-        print("Calendar update completed successfully")
-        print(f"Calendar file created/updated at: {os.path.abspath(CALENDAR_FILE)}")
-    except Exception as e:
-        print(f"Error during calendar update: {e}")
+        # Build event
+        ics_lines.extend([
+            'BEGIN:VEVENT',
+            f'UID:{uid}',
+            f'DTSTAMP:{dtstamp}',
+            f'DTSTART:{dtstart}',
+        ])
+        
+        if dtend:
+            ics_lines.append(f'DTEND:{dtend}')
+        
+        ics_lines.extend([
+            f'SUMMARY:{title}',
+            f'DESCRIPTION:{sanitize_ics_text(event.get("date_display", ""))}',
+        ])
+        
+        if location:
+            ics_lines.append(f'LOCATION:{location}')
+        
+        if url:
+            ics_lines.append(f'URL:{url}')
+        
+        ics_lines.extend([
+            'STATUS:CONFIRMED',
+            'END:VEVENT',
+        ])
+    
+    ics_lines.append('END:VCALENDAR')
+    
+    # Write to file
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write('\r\n'.join(ics_lines))
+    
+    print(f"Saved {len(events)} events to {filename}")
+
+if __name__ == '__main__':
+    # Scrape calendar from current date for one year ahead
+    today = datetime.now()
+    end_date = today + timedelta(days=365)
+    
+    print(f"Scraping calendar from {today.strftime('%Y-%m')} to {end_date.strftime('%Y-%m')}")
+    
+    events = scrape_calendar(
+        start_year=today.year, 
+        start_month=today.month,
+        end_year=end_date.year,
+        end_month=end_date.month
+    )
+    
+    print(f"\nTotal events found: {len(events)}")
+    
+    # Save to CSV, JSON, and ICS formats
+    save_to_csv(events)
+    save_to_json(events)
+    save_to_ics(events)
+    
+    # Print first few events as preview
+    print("\nPreview of events:")
+    for event in events[:3]:
+        print(f"\n- {event.get('title')}")
+        print(f"  Date: {event.get('date_display')}")
+        print(f"  Location: {event.get('location')}")
+        print(f"  URL: {event.get('url')}")
