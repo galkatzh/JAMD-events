@@ -87,7 +87,7 @@ def extract_events_from_html(html_content):
                 event_data['title'] = link.get_text(strip=True)
                 event_data['url'] = 'https://www.jamd.ac.il' + link.get('href', '')
         
-        # Extract date/time
+        # Extract date/time - Method 1: from date field
         date_field = event_div.find('div', class_='views-field-field-event-date-1')
         if date_field:
             date_span = date_field.find('span', class_='date-display-single')
@@ -100,6 +100,32 @@ def extract_events_from_html(html_content):
                         event_data['datetime'] = date_parser.parse(datetime_str).isoformat()
                     except:
                         event_data['datetime'] = datetime_str
+        
+        # Method 2: If no datetime found, try to get it from parent td's data-date attribute
+        if 'datetime' not in event_data:
+            # Find the parent <td> element which has data-date
+            parent_td = event_div.find_parent('td')
+            if parent_td and parent_td.get('data-date'):
+                date_str = parent_td.get('data-date')
+                # Try to find time from the date_display text
+                time_str = None
+                if 'date_display' in event_data:
+                    # Look for time pattern like "18:00"
+                    import re
+                    time_match = re.search(r'(\d{1,2}:\d{2})', event_data['date_display'])
+                    if time_match:
+                        time_str = time_match.group(1)
+                
+                # Combine date and time
+                if time_str:
+                    datetime_str = f"{date_str}T{time_str}:00+02:00"
+                else:
+                    datetime_str = f"{date_str}T00:00:00+02:00"
+                
+                try:
+                    event_data['datetime'] = date_parser.parse(datetime_str).isoformat()
+                except:
+                    event_data['datetime'] = datetime_str
         
         # Extract location
         location_field = event_div.find('div', class_='views-field-field-event-location')
