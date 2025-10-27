@@ -14,33 +14,55 @@ import re
 def fetch_month_calendar(year, month):
     """Fetch calendar data for a specific month"""
     
-    url = "https://www.jamd.ac.il/calendar-of-events-page"
+    # Use the Drupal Views AJAX endpoint
+    url = "https://www.jamd.ac.il/views/ajax"
     
     # Format month as YYYY-MM
     month_str = f"{year}-{month:02d}"
     
-    params = {
-        'page': '0',
+    # Minimal parameters that should work for Drupal Views AJAX
+    data = {
         'view_name': 'calendar_event',
         'view_display_id': 'block_calendar_secondary',
         'view_args': month_str,
-        'view_path': 'node/8289',
+        'view_path': 'calendar-of-events-page',
         'view_base_path': 'calendar-node-field-event-date/month',
         'view_dom_id': '43a9961c501d60faa3159e34295a5dcb',
         'pager_element': '0',
-        'mini': month_str,
     }
     
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'application/json',
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Requested-With': 'XMLHttpRequest',
+        'Referer': 'https://www.jamd.ac.il/calendar-of-events-page',
+        'Origin': 'https://www.jamd.ac.il',
     }
     
     try:
-        response = requests.get(url, params=params, headers=headers, timeout=10)
+        # Try POST first (standard for Drupal Views AJAX)
+        response = requests.post(url, data=data, headers=headers, timeout=10)
+        
+        # If POST fails, try GET
+        if response.status_code != 200:
+            response = requests.get(url, params=data, headers=headers, timeout=10)
+        
         response.raise_for_status()
+        
+        # Check if response is JSON
+        content_type = response.headers.get('Content-Type', '')
+        if 'application/json' not in content_type and 'text/javascript' not in content_type:
+            print(f"Warning: Response for {month_str} is not JSON (Content-Type: {content_type})")
+            print(f"First 500 chars of response: {response.text[:500]}")
+            return None
+        
         return response.json()
+    except json.JSONDecodeError as e:
+        print(f"JSON decode error for {month_str}: {e}")
+        print(f"Response status: {response.status_code}")
+        print(f"First 500 chars: {response.text[:500]}")
+        return None
     except Exception as e:
         print(f"Error fetching {month_str}: {e}")
         return None
