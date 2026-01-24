@@ -336,9 +336,17 @@ def save_to_ics(events, filename='calendar_events.ics'):
         if dtend:
             ics_lines.append(f'DTEND:{dtend}')
         
+        # Build description with date_display and URL
+        description_parts = []
+        if event.get("date_display"):
+            description_parts.append(event.get("date_display"))
+        if url:
+            description_parts.append(f"URL: {url}")
+        description = sanitize_ics_text("\n".join(description_parts))
+        
         ics_lines.extend([
             f'SUMMARY:{title}',
-            f'DESCRIPTION:{sanitize_ics_text(event.get("date_display", ""))}',
+            f'DESCRIPTION:{description}',
         ])
         
         if location:
