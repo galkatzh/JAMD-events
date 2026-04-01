@@ -6,41 +6,8 @@ METHOD:PUBLISH
 X-WR-CALNAME:JAMD Events
 X-WR-TIMEZONE:Asia/Jerusalem
 BEGIN:VEVENT
-UID:event-0-20260311T190000@jamd.ac.il
-DTSTAMP:20260327T054302Z
-DTSTART:20260311T190000
-DTEND:20260311T200000
-SUMMARY:כיתת אמן - השקת ספרו החדש של אלון אולארצ'יק
-DESCRIPTION:יום רביעי\, 11 מרץ\, 19:00\nURL: https://www.jamd.ac.il/node/8360
-LOCATION:אולם הרסיטלים
-URL:https://www.jamd.ac.il/node/8360
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:event-1-20260311T200000@jamd.ac.il
-DTSTAMP:20260327T054302Z
-DTSTART:20260311T200000
-DTEND:20260311T210000
-SUMMARY:האירוע בוטל - קומקום ומטאטא - מופע בסדרת המופעים
-DESCRIPTION:יום רביעי\, 11 מרץ\, 20:00\nURL: https://www.jamd.ac.il/node/8362
-LOCATION:אולם רבקה קראון\, תיאטרון ירושלים
-URL:https://www.jamd.ac.il/node/8362
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:event-2-20260313T093000@jamd.ac.il
-DTSTAMP:20260327T054302Z
-DTSTART:20260313T093000
-DTEND:20260313T103000
-SUMMARY:תחרויות ארציות לגיטרה קלאסית ע"ש אריאן
-DESCRIPTION:יום שישי\, 13 מרץ\, 9:30\nURL: https://www.jamd.ac.il/node/8323
-LOCATION:אולם הרסיטלים ע"ש מרים וודונוס
-URL:https://www.jamd.ac.il/node/8323
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:event-3-20260414T130000@jamd.ac.il
-DTSTAMP:20260327T054302Z
+UID:event-0-20260414T130000@jamd.ac.il
+DTSTAMP:20260401T055628Z
 DTSTART:20260414T130000
 DTEND:20260414T140000
 SUMMARY:מפגש בנושא: יחסי ישראל וגרמניה\, בין ביקורת
