@@ -7,13 +7,24 @@ X-WR-CALNAME:JAMD Events
 X-WR-TIMEZONE:Asia/Jerusalem
 BEGIN:VEVENT
 UID:event-0-20260414T130000@jamd.ac.il
-DTSTAMP:20260415T060136Z
+DTSTAMP:20260422T060130Z
 DTSTART:20260414T130000
 DTEND:20260414T140000
 SUMMARY:מפגש בנושא: יחסי ישראל וגרמניה\, בין ביקורת
 DESCRIPTION:ג\, 14 אפריל\, 13:00\nURL: https://www.jamd.ac.il/node/8370
 LOCATION:אולם הרסיטלים
 URL:https://www.jamd.ac.il/node/8370
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:event-1-20260429T200000@jamd.ac.il
+DTSTAMP:20260422T060130Z
+DTSTART:20260429T200000
+DTEND:20260429T210000
+SUMMARY:בין סגנונות - מופע בסדרת המופעים הרב-תחומיים
+DESCRIPTION:יום רביעי\, 29 אפריל\, 20:00\nURL: https://www.jamd.ac.il/node/8372
+LOCATION:אולם רבקה קראון\, תיאטרון ירושלים
+URL:https://www.jamd.ac.il/node/8372
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR
