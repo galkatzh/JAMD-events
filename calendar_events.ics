@@ -6,25 +6,25 @@ METHOD:PUBLISH
 X-WR-CALNAME:JAMD Events
 X-WR-TIMEZONE:Asia/Jerusalem
 BEGIN:VEVENT
-UID:event-0-20260414T130000@jamd.ac.il
-DTSTAMP:20260427T062931Z
-DTSTART:20260414T130000
-DTEND:20260414T140000
-SUMMARY:מפגש בנושא: יחסי ישראל וגרמניה\, בין ביקורת
-DESCRIPTION:ג\, 14 אפריל\, 13:00\nURL: https://www.jamd.ac.il/node/8370
-LOCATION:אולם הרסיטלים
-URL:https://www.jamd.ac.il/node/8370
+UID:event-0-20260507T090000@jamd.ac.il
+DTSTAMP:20260501T063840Z
+DTSTART:20260507T090000
+DTEND:20260507T100000
+SUMMARY:יום פתוח חוויתי במסלול למוסיקה מוקדמת
+DESCRIPTION:יום חמישי\, 7 מאי\, 9:00\nURL: https://www.jamd.ac.il/node/8374
+LOCATION:בניין האקדמיה
+URL:https://www.jamd.ac.il/node/8374
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:event-1-20260429T200000@jamd.ac.il
-DTSTAMP:20260427T062931Z
-DTSTART:20260429T200000
-DTEND:20260429T210000
-SUMMARY:בין סגנונות - מופע בסדרת המופעים הרב-תחומיים
-DESCRIPTION:יום רביעי\, 29 אפריל\, 20:00\nURL: https://www.jamd.ac.il/node/8372
-LOCATION:אולם רבקה קראון\, תיאטרון ירושלים
-URL:https://www.jamd.ac.il/node/8372
+UID:event-1-20260507T150000@jamd.ac.il
+DTSTAMP:20260501T063840Z
+DTSTART:20260507T150000
+DTEND:20260507T160000
+SUMMARY:יום שיא חוויתי לנגני נבל מכל רחבי הארץ באקדמיה
+DESCRIPTION:יום חמישי\, 7 מאי\,15:00עד20:00\nURL: https://www.jamd.ac.il/node/8373
+LOCATION:בניין האקדמיה
+URL:https://www.jamd.ac.il/node/8373
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR
